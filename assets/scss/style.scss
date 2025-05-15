@@ -1,0 +1,27 @@
+@import "includes/variables";
+
+.unlog {
+    main#wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      #content {
+        border-radius: 20px;
+        background-color: $lightgreen;
+        padding-left: 200px;
+        padding-right: 200px;
+        h1 {
+          color: #FFF;
+          text-align: center;
+          font-weight: 600;
+          margin-bottom: 50px;
+        }
+        form {
+          color: #FFF;
+          label {
+            color: #FFF;
+          }
+        }
+      }
+    }
+}

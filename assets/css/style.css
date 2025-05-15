@@ -1,0 +1,25 @@
+.unlog main#wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.unlog main#wrap #content {
+  border-radius: 20px;
+  background-color: #4D8077;
+  padding-left: 200px;
+  padding-right: 200px;
+}
+.unlog main#wrap #content h1 {
+  color: #FFF;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 50px;
+}
+.unlog main#wrap #content form {
+  color: #FFF;
+}
+.unlog main#wrap #content form label {
+  color: #FFF;
+}
+
+/*# sourceMappingURL=style.css.map */

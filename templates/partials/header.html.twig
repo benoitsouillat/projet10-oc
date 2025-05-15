@@ -1,0 +1,14 @@
+<div id="current-user"></div>
+<div id="title-page">
+    <div class="flex-header">
+        <h1>{{ title }}</h1>
+        {% if app.request.attributes.get('_route') == 'app_project_show' %}
+            <div class="user-list">
+                {% for employee in project.teamlist %}
+                    <div class="avatar">{{ employee.thumbnail ?? employee.getInitial() }}</div>
+                {% endfor %}
+            </div>
+            <a class="button" href="{{ path('app_project_edit', {'id': project.id}) }}">Modifier</a>
+        {% endif %}
+    </div>
+</div>

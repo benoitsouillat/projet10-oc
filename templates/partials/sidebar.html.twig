@@ -1,0 +1,15 @@
+<a href="{{ path('index') }}" id="logo">
+    <img src="{{ asset('/img/logo.png') }}" alt="Logo TaskLinker">
+</a>
+<ul id="main-menu">
+    <li class="{{ app.request.attributes.get('_route') starts with 'app_project_' ? 'active' }}">
+        <a href="{{ path('app_project_index') }}">
+            <i class="fa-solid fa-list-check"></i> Projets
+        </a>
+    </li>
+    <li class="{{ app.request.attributes.get('_route') starts with 'app_team_' ? 'active' }}">
+        <a href="{{ path('app_team_index') }}">
+            <i class="fa-regular fa-user"></i> Équipe
+        </a>
+    </li>
+</ul>

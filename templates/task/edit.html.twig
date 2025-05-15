@@ -1,0 +1,15 @@
+{%  extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.status) }}
+    {{ form_row(form.employee) }}
+    <button class="button button-submit" type="submit">{{ app.request.attributes.get('_route') == 'app_task_edit' ? 'Modifier' : 'Ajouter' }}</button>
+    {% if app.request.attributes.get('_route') == 'app_task_edit' %}<a class="delete-task" href="{{ path('app_task_delete', {'id': task.id}) }}">Supprimer la tâche</a>{% endif %}
+
+    {{ form_end(form) }}
+{% endblock %}

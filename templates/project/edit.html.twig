@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    {{ form_row(form.name) }}
+    {{ form_row(form.teamList) }}
+    <button class="button button-submit" type="submit">Enregistrer</button>
+
+    {{ form_end(form) }}
+{% endblock %}
