@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Enum\JobStatus;
 use App\Factory\EmployeeFactory;
 use App\Factory\TaskFactory;
 use App\Factory\UserFactory;
@@ -13,16 +14,20 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-        UserFactory::createOne([
+        $adminUser = UserFactory::createOne([
             'email' => 'benoit.souillat@gmail.com',
             'firstname' => 'Benoît',
             'lastname' => 'Souillat',
             'password' => 'password',
             'roles' => ['ROLE_ADMIN'],
         ]);
-        UserFactory::createMany(4);
+        EmployeeFactory::createOne([
+            'firstname' => 'Benoît',
+            'lastname' => 'Souillat',
+            'email' => 'benoit.souillat@gmail.com',
+            'user' => $adminUser,
+        ]);
+        //UserFactory::createMany(4);
         EmployeeFactory::createMany(10);
         ProjectFactory::createMany(6);
         TaskFactory::createMany(50);

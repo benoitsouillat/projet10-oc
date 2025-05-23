@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Employee;
 use App\Entity\User;
+use App\Enum\JobStatus;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +33,14 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('app_register');
             }
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $employee = new Employee();
+            $employee->setFirstname($user->getFirstname())
+                    ->setLastname($user->getLastname())
+                    ->setEmail($user->getEmail())
+                    ->setHireDate(new \DateTime())
+                    ->setStatus(JobStatus::toDefine)
+                    ->setUser($user);
+            $user->setEmployee($employee);
 
             $entityManager->persist($user);
             $entityManager->flush();

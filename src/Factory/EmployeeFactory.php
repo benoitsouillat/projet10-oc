@@ -33,6 +33,7 @@ final class EmployeeFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
+            'user' => UserFactory::new(),
             'email' => self::faker()->unique()->safeEmail(),
             'firstname' => self::faker()->firstname(),
             'lastname' => self::faker()->lastname(),

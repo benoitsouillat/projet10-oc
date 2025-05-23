@@ -61,6 +61,10 @@ class Employee
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'employee', cascade: ['persist', 'remove'])]
     private Collection $tasks;
 
+    #[ORM\OneToOne(inversedBy: 'employee', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -197,5 +201,17 @@ class Employee
     public function getInitial()
     {
         return substr($this->getFirstname(), 0, 1) . substr($this->getLastname(), 0, 1);
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
