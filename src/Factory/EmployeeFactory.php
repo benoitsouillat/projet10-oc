@@ -33,10 +33,10 @@ final class EmployeeFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'email' => self::faker()->email(),
-            'firstname' => self::faker()->text(15),
-            'lastname' => self::faker()->text(15),
-            'hireDate' => self::faker()->dateTime(),
+            'email' => self::faker()->unique()->safeEmail(),
+            'firstname' => self::faker()->firstname(),
+            'lastname' => self::faker()->lastname(),
+            'hireDate' => self::faker()->dateTimeBetween('-10 years', 'now'),
             'status' => self::faker()->randomElement(JobStatus::cases()),
         ];
     }

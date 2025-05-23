@@ -5,9 +5,10 @@
 {% block body %}
     <h1>Inscription</h1>
 
-    {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
+
+    {{ form_errors(registrationForm) }}
 
     {{ form_row(registrationForm.firstname) }}
     {{ form_row(registrationForm.lastname) }}
@@ -15,6 +16,9 @@
     {{ form_row(registrationForm.plainPassword) }}
     {{ form_row(registrationForm.confirmPassword) }}
 
-    <button type="submit" class="btn">S'inscrire</button>
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-success">S'inscrire</button>
+        <a class="btn btn-outline-dark" href="{{ path('app_login') }}" class="">Se connecter</a>
+    </div>
     {{ form_end(registrationForm) }}
 {% endblock %}

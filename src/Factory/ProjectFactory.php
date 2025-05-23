@@ -32,8 +32,8 @@ final class ProjectFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'archive' => self::faker()->boolean(),
-            'name' => self::faker()->text(60),
+            'archive' => self::faker()->boolean(20),
+            'name' => self::faker()->sentence(3, true),
             'teamList' => EmployeeFactory::randomRange(1,5),
             /*'tasks' => TaskFactory::randomRange(3,10),*/
         ];

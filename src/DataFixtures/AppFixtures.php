@@ -15,6 +15,13 @@ class AppFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
+        UserFactory::createOne([
+            'email' => 'benoit.souillat@gmail.com',
+            'firstname' => 'Benoît',
+            'lastname' => 'Souillat',
+            'password' => 'password',
+            'roles' => ['ROLE_ADMIN'],
+        ]);
         UserFactory::createMany(4);
         EmployeeFactory::createMany(10);
         ProjectFactory::createMany(6);

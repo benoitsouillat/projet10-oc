@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 #[Route('/team', name: 'app_team_')]
 final class TeamController extends AbstractController
 {
@@ -28,6 +30,7 @@ final class TeamController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN' )]
     #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
     #[Route('/{id}', name: 'edit', requirements:  ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request,?Employee $employee = null): Response
@@ -50,6 +53,8 @@ final class TeamController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[IsGranted('ROLE_ADMIN' )]
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     #[Route('/delete/{id}', name: 'delete', requirements:  ['id' => '\d+'], methods: ['GET'])]
     public function delete(Request $request, Employee $employee): Response

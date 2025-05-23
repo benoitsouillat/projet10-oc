@@ -32,12 +32,15 @@ final class UserFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'email' => self::faker()->text(255),
-            'firstname' => self::faker()->text(255),
-            'lastname' => self::faker()->text(255),
+            'email' => self::faker()->unique()->safeEmail(),
+            'firstname' => self::faker()->firstname(),
+            'lastname' => self::faker()->lastname(),
             'password' => 'password',
-            'roles' => [],
-            'username' => self::faker()->text(180),
+            'roles' => self::faker()->randomElement([
+                ['ROLE_USER'],
+                ['ROLE_ADMIN'],
+                ['ROLE_USER', 'ROLE_PROJECT_OWNER'],
+            ]),
         ];
     }
 
@@ -47,7 +50,10 @@ final class UserFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(User $user): void {})
-        ;
+            ->afterInstantiate(function(User $user): void {
+                $user->setPassword(
+                    password_hash($user->getPassword(), PASSWORD_BCRYPT)
+                );
+            });
     }
 }
