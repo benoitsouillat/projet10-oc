@@ -10,4 +10,15 @@ enum JobStatus: string
     case freelance = "Freelance";
     case interim = "Interim";
 
+    public function label(): string
+    {
+        return match($this) {
+            self::toDefine => 'A définir',
+            self::cdi => 'CDI',
+            self::cdd => 'CDD',
+            self::freelance => 'Freelance',
+            self::interim => 'Interim',
+        };
+    }
+
 }

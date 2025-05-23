@@ -2,7 +2,7 @@
     <img src="{{ asset('/img/logo.png') }}" alt="Logo TaskLinker">
 </a>
 <ul id="main-menu">
-    <li class="{{ app.request.attributes.get('_route') starts with 'app_project_' ? 'active' }}">
+    <li class="{{ app.request.attributes.get('_route') starts with 'app_project_' or app.request.attributes.get('_route') == 'index' ? 'active' }}">
         <a href="{{ path('app_project_index') }}">
             <i class="fa-solid fa-list-check"></i> Projets
         </a>

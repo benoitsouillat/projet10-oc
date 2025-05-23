@@ -1,13 +1,15 @@
 {%  extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form_start(form) }}
+    {{ form_start(form)}}
 
-    {{ form_row(form.firstname) }}
-    {{ form_row(form.lastname) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.hireDate) }}
-    {{ form_row(form.status) }}
+    {{ form_row(form.firstname)}}
+    {{ form_row(form.lastname)}}
+    {{ form_row(form.email)}}
+    {{ form_row(form.hireDate)}}
+    {{ form_row(form.status)}}
+    {{ form_row(form.role)}}
+
     <button class="button button-submit" type="submit">Enregistrer</button>
 
     {{ form_end(form) }}

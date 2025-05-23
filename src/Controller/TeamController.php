@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Employee;
+use App\Enum\RoleUser;
 use App\Form\EmployeeType;
 use App\Repository\EmployeeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,39 +25,38 @@ final class TeamController extends AbstractController
     public function index(EmployeeRepository $repository): Response
     {
         $employees = $repository->findAll();
-
         return $this->render('team/index.html.twig', [
             'title' => 'Équipe',
             'employees' => $employees,
         ]);
     }
 
-    #[IsGranted('ROLE_ADMIN' )]
-    #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_PROJECT_OWNER')]
     #[Route('/{id}', name: 'edit', requirements:  ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(Request $request,?Employee $employee = null): Response
+    public function edit(Request $request,?Employee $employee): Response
     {
-        if (!$employee) {
-            $employee = new Employee();
-        }
-
-        $form = $this->createForm(EmployeeType::class, $employee)
+        $form = $this->createForm(EmployeeType::class, $employee, [
+            'roleATM' => RoleUser::from($employee->getUser()->getRoles()[0]),
+        ])
                 ->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $employee->getUser();
+            $newRole[] = $form->get('role')->getData();
+            $user->setRoles($newRole);
+            $this->manager->persist($user);
             $this->manager->persist($employee);
             $this->manager->flush();
             $this->addFlash('success', sprintf("L'employé %s a bien été mis à jour", $employee->getFirstname() . ' ' . $employee->getLastname()));
             return $this->redirectToRoute('app_team_index');
         }
         return $this->render('team/edit.html.twig', [
-            'title' => !empty($employee) ? $employee->getFirstname() . ' ' . $employee->getLastname() : 'Ajouter un employé',
+            'title' => $employee->getFirstname() . ' ' . $employee->getLastname() ,
             'employee' => $employee,
             'form' => $form,
         ]);
     }
 
-    #[IsGranted('ROLE_ADMIN' )]
-    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_PROJECT_OWNER' )]
     #[Route('/delete/{id}', name: 'delete', requirements:  ['id' => '\d+'], methods: ['GET'])]
     public function delete(Request $request, Employee $employee): Response
     {

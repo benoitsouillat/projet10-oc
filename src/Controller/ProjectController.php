@@ -9,6 +9,7 @@ use App\Form\TaskType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,9 +23,12 @@ final class ProjectController extends AbstractController
 
     #[Route('', name: 'index')]
     #[Route('/project', name: 'app_project_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Security $security): Response
     {
-        $projects = $this->manager->getRepository(Project::class)->findAllActive();
+        $projects = $this->isGranted('ROLE_PROJECT_OWNER') ?
+            $this->manager->getRepository(Project::class)->findAllActive() :
+            $this->manager->getRepository(Project::class)->findAllByUser($security->getUser()->getId());
+
         return $this->render('project/index.html.twig', [
             'title' => 'Projets',
             'projects' => $projects,
@@ -34,6 +38,8 @@ final class ProjectController extends AbstractController
     #[Route('/project/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Project $project): Response
     {
+        /* Voter pour vérifier si on est PROJECT_OWNER ou ADMIN */
+
         return $this->render('project/show.html.twig', [
             'title' => $project->getName(),
             'project' => $project,
@@ -43,7 +49,7 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_PROJECT_OWNER', 'ROLE_ADMIN' )]
+    #[IsGranted('ROLE_PROJECT_OWNER')]
     #[Route('/project/add', name: 'app_project_add', methods: ['GET', 'POST'])]
     #[Route('/project/{id}/edit', name: 'app_project_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, ?Project $project = null): Response
@@ -66,7 +72,7 @@ final class ProjectController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_PROJECT_OWNER', 'ROLE_ADMIN' )]
+    #[IsGranted('ROLE_PROJECT_OWNER' )]
     #[Route('/project/delete/{id}', name: 'app_project_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function delete(Project $project): Response
     {
@@ -77,7 +83,7 @@ final class ProjectController extends AbstractController
         return $this->redirectToRoute('app_project_index');
     }
 
-    #[IsGranted('ROLE_PROJECT_OWNER', 'ROLE_ADMIN' )]
+    #[IsGranted('ROLE_PROJECT_OWNER' )]
     #[Route('/project/{id}/add-task', name: 'app_project_add-task', methods: ['GET', 'POST'])]
     public function addTask(Request $request, Project $project): Response
     {

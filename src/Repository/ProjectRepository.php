@@ -25,28 +25,14 @@ class ProjectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    //    /**
-    //     * @return Project[] Returns an array of Project objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Project
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findAllByUser(int $userID): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.teamList', 't')
+            ->join('t.user', 'u')
+            ->andWhere('u.id = :userID')
+            ->setParameter('userID', $userID)
+            ->getQuery()
+            ->getResult();
+    }
 }

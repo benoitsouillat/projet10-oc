@@ -38,6 +38,10 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/profile, roles: ROLE_USER }
+    role_hierarchy:
+        ROLE_USER: ~
+        ROLE_PROJECT_OWNER: ROLE_USER
+        ROLE_ADMIN: ROLE_PROJECT_OWNER
 
 when@test:
     security:

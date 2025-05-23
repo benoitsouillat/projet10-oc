@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Employee;
 use App\Enum\JobStatus;
+use App\Enum\RoleUser;
 use Composer\XdebugHandler\Status;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -17,6 +18,7 @@ class EmployeeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $roleATM = $options['roleATM'] ?? null;
         $builder
             ->add('firstname', TextType::class, [
                 'label' => 'Nom',
@@ -33,6 +35,16 @@ class EmployeeType extends AbstractType
             ->add('status', EnumType::class, [
                 'class' => JobStatus::class,
                 'label' => 'Statut',
+                'choice_label' => fn(JobStatus $status) => $status->label(),
+            ])
+            ->add('role', EnumType::class, [
+                'class' => RoleUser::class,
+                'label' => 'Rôle',
+                'mapped' => false,
+                'expanded' => false,
+                'multiple' => false,
+                'choice_label' => fn(RoleUser $role) => $role->label(),
+                'data' => $roleATM ?? RoleUser::Collaborateur,
             ])
         ;
     }
@@ -42,5 +54,7 @@ class EmployeeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Employee::class,
         ]);
+        $resolver->setDefined(['roleATM']);
+        $resolver->setAllowedTypes('roleATM', [RoleUser::class, 'null']);
     }
 }
