@@ -6,7 +6,7 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Form\ProjectType;
 use App\Form\TaskType;
-use App\Repository\ProjectRepository;
+use App\Security\Voter\ProjectVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -36,10 +36,9 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/project/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[IsGranted('ACCESS', subject: 'project')]
     public function show(Project $project): Response
     {
-        /* Voter pour vérifier si on est PROJECT_OWNER ou ADMIN */
-
         return $this->render('project/show.html.twig', [
             'title' => $project->getName(),
             'project' => $project,
