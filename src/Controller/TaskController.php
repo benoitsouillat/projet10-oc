@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/task', name: 'app_task_')]
+#[IsGranted('ACCESS', subject: 'task')]
 final class TaskController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $manager)

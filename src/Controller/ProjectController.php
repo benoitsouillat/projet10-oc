@@ -82,7 +82,8 @@ final class ProjectController extends AbstractController
         return $this->redirectToRoute('app_project_index');
     }
 
-    #[IsGranted('ROLE_PROJECT_OWNER' )]
+    /*#[IsGranted('ROLE_PROJECT_OWNER' )]*/
+    #[IsGranted('ACCESS', subject: 'project')]
     #[Route('/project/{id}/add-task', name: 'app_project_add-task', methods: ['GET', 'POST'])]
     public function addTask(Request $request, Project $project): Response
     {
